@@ -3,8 +3,8 @@ import "./tts.js";
 import "./slider.js";
 import "./soundboard.js"
 
-const height = 50;
-const width = 50;
+const height = 75;
+const width = 75;
 
 // Add components here (id is important for communication)
 // const html = `
