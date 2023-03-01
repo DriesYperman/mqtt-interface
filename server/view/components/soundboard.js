@@ -26,7 +26,8 @@ window.customElements.define('soundboard-Ƅ', class extends HTMLElement {
                 box-sizing: border-box;
                 position: absolute;
                 aspect-ratio: 1/1;
-                border: 5px solid #bbb;
+                background: #ecf0f3;
+                box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
                 border-radius: 5px;
                 top: 50%;
                 left: 50%;
