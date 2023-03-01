@@ -16,8 +16,8 @@ window.customElements.define('soundboard-Ƅ', class extends HTMLElement {
             <div class="square color1" id="samson-jaah-1"></div>
             <div class="square color1" id="voorzichtig-op-de-baad"></div>
             <div class="square color2" id="untitled-2_10"></div>
-            <div class="square color2" id="het-lijden-van-de-vlaamse-bosdwerg"></div>
-            <div class="square color1" id="tf_nemesis"></div>
+            <div class="square color2" id="and-his-name-is-john-cena-1"></div>
+            <div class="square color1" id="rocky-theme-song-mp3cut"></div>
     	`;
 
         this.style = document.createElement('style');

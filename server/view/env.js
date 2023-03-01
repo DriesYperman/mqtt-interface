@@ -1,2 +1,2 @@
-window.HOST = "192.168.5.108"
-window.PORT = "2105"
+export const HOST = "172.16.0.107"
+export const PORT = "2105"

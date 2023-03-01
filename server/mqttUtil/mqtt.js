@@ -1,10 +1,19 @@
+import * as dotenv from 'dotenv';
 import * as mqtt from 'mqtt';
 import * as format from './message_formatting.js';
+import { EventEmitter } from 'events';
 
 const succes_color = '\x1b[32m%s\x1b[0m';
 const error_color = '\x1b[31m%s\x1b[0m';
 const succes_send_color = '\x1b[35m%s\x1b[0m';
-const didnt_send_color = '\x1b[36m%s\x1b[0m'
+const didnt_send_color = '\x1b[36m%s\x1b[0m';
+
+const messageEmitter = new EventEmitter();
+let message_data = { "newMessage": false, "topic": "", "message": "" };
+
+const setMessageData = (data) => {
+    messageEmitter.emit('messageUpdated', `${data}`);
+}
 
 let connection;
 
@@ -19,9 +28,9 @@ const publish_topic_bindings = {
 // All topics for subscribing
 const subscribe_topic_bindings = {
     "tts": "zbos/dialog/set",
-    "camera": "zbos/camera/stream/answer"
+    "camera": "zbos/camera/stream/answer",
+    "movement2d": "zbos/motion/control/movement"
 };
-
 
 const mqttInit = () => {
     connection = mqtt.connect(process.env.MQTT_BROKER, { queueQoSZero: false });
@@ -38,16 +47,17 @@ const mqttInit = () => {
         console.log(error_color, `Error connecting controller: ${error}`);
         connected_for_publishing = false;
     })
+
+    connection.on('message', function (topic, message) {
+        message_data = { "topic": topic, "message": message };
+        setMessageData(message);
+    });
 }
 
 const subscribeToTopics = (bindings) => {
     for (const [key, value] of Object.entries(bindings)) {
         mqttSubscribe(key, value);
     }
-
-    connection.on('message', function (topic, message) {
-        console.log(`Received message on topic ${topic}: ${message.toString()}`);
-    });
 }
 
 const mqttSubscribe = (source, topic) => {
@@ -75,4 +85,4 @@ const mqttSendJsonMessage = (source, data) => {
     }
 }
 
-export { mqttInit, mqttSendJsonMessage };
+export { mqttInit, mqttSendJsonMessage, message_data, messageEmitter };

@@ -6,12 +6,16 @@ import * as mqqtUtil from './mqttUtil/mqtt.js';
 
 
 dotenv.config();
+
 const HTTP = http.createServer();
 const wss = new WebSocketServer({ server: HTTP });
 
 HTTP.on('request', APP);
 
+mqqtUtil.mqttInit();
+
 wss.on('connection', function connection(ws) {
+
     ws.on('message', function incoming(message) {
         let incoming;
         try {
@@ -26,7 +30,6 @@ wss.on('connection', function connection(ws) {
             case "controller-connected":
                 const remote = ws._socket.remoteAddress.toString();
                 console.log(`Incoming controller connection from ${remote.slice(7)}\n`);
-                mqqtUtil.mqttInit();
                 break;
             case "mqtt":
                 mqqtUtil.mqttSendJsonMessage(incoming.source, incoming.data);
@@ -34,6 +37,11 @@ wss.on('connection', function connection(ws) {
             default:
                 console.log(`log: ${incoming.payload}`);
         }
+    });
+
+    mqqtUtil.messageEmitter.on('messageUpdated', (data) => {
+        const message = JSON.parse(data);
+        ws.send(data);
     });
 });
 

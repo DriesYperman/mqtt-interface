@@ -57,16 +57,11 @@ window.customElements.define('slider-Ƅ', class extends HTMLElement {
         background: #aa0020;;
         cursor: pointer;
       }
-      
-    
-    
     `;
 
     this._shadowroot = this.attachShadow({ mode: 'open' });
     this._shadowroot.appendChild(this.slide);
     this._shadowroot.appendChild(this.style);
-
-    this.socket = new WebSocket(`ws://${window.HOST}:${window.PORT}`);
 
     this.slide.addEventListener('change', this.moveSlider.bind(this));
     document.addEventListener('DOMContentLoaded', () => {

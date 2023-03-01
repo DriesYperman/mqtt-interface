@@ -1,18 +1,12 @@
+import { HOST, PORT } from "../env.js"
 import "./joystick.js";
 import "./tts.js";
 import "./slider.js";
 import "./soundboard.js"
+import "./JSONviewer.js"
 
 const height = 50;
 const width = 50;
-
-// Add components here (id is important for communication)
-// const html = `
-//     <joystick-Ƅ id="movement2d"></joystick-Ƅ>
-//     <tts-Ƅ id="tts"></tts-Ƅ>
-//     <slider-Ƅ id="force" min="0" max="200" start="100"></slider-Ƅ>
-//     <slider-Ƅ id="speed" min="0" max="500" start="100"></slider-Ƅ>
-// `;
 
 // Available components:
 // <joystick-Ƅ id="movement2d"></joystick-Ƅ>
@@ -30,6 +24,9 @@ const html = `
     </div>
     <div class="three">
         <tts-Ƅ id="tts"></tts-Ƅ>
+    </div>
+    <div class="four">
+        <json-Ƅ id="json" data-value=""></json-Ƅ>
     </div>
 `
 
@@ -60,14 +57,21 @@ style.textContent = `
     .two {
         position: relative;
         grid-column: 2;
-        grid-row: 2;
+        grid-row: 1;
         width: 100%;
         height: 100%;
     }
     .three {
         position: relative;
+        grid-column: 1;
+        grid-row: 2;
+        width: 100%;
+        height: 100%;
+    }
+    .four {
+        position: relative;
         grid-column: 2;
-        grid-row: 1;
+        grid-row: 2;
         width: 100%;
         height: 100%;
     }
@@ -89,10 +93,25 @@ window.customElements.define('controller-Ƅ', class extends HTMLElement {
         this._shadowroot.innerHTML = html;
         this._shadowroot.appendChild(style);
 
-        this.socket = new WebSocket(`ws://${window.HOST}:${window.PORT}`);
+        this.socket = new WebSocket(`ws://${HOST}:${PORT}`);
     }
 
     connectedCallback() {
+        this.socket.addEventListener('message', event => {
+            let incoming;
+            try {
+                incoming = JSON.parse(event.data);
+            } catch (error) {
+                console.warn("PAYLOAD ERROR");
+                console.dir(error);
+                incoming = { "payload": "illegal payload" };
+            }
+            switch (incoming) {
+                default:
+                    this.sendJsonData(incoming);
+            }
+        });
+
         this.socket.addEventListener('open', event => {
             console.log("opening socket for controller ...")
             this.socket.send(JSON.stringify({ "payload": `controller-connected` }));
@@ -104,7 +123,7 @@ window.customElements.define('controller-Ƅ', class extends HTMLElement {
             });
             // ---------------------------------------------
 
-            // logInput is used to periodically send the global variable ( logInput(this.socket, <source(id of component)>, <data>, <period(ms)>); )
+            // logPeriodicalInput is used to periodically send the global variable ( logInput(this.socket, <source(id of component)>, <data>, <period(ms)>); )
             // Do this for the continuous inputsensors
             logPeriodicalInput(this.socket, "movement2d", movement2d, 300);
             // --------------------------------------------
@@ -128,12 +147,25 @@ window.customElements.define('controller-Ƅ', class extends HTMLElement {
             this.addEventListener("sounds", (e) => {
                 sounds.link = e.detail.link;
                 let message = { "payload": "mqtt", "source": "sounds", "data": sounds };
-                console.log(JSON.stringify(message));
                 this.socket.send(JSON.stringify(message));
             });
             // ---------------------------------------------
         });
+
+
     }
+
+    sendJsonData(data) {
+        const jsonView = this._shadowroot.getElementById("json");
+        jsonView.dispatchEvent(new CustomEvent("jsonData", {
+			bubbles: true,
+			composed: true,
+			detail: {
+				"message": data
+			}
+		}));
+    }
+
 });
 
 const logPeriodicalInput = (socket, source, data, interval) => {
