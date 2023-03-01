@@ -33,6 +33,9 @@ const html = `
         <div class="three">
             <tts-Ƅ id="tts"></tts-Ƅ>
         </div>
+        <div class="four">
+            <json-Ƅ id="json"><json-Ƅ>
+        </div>
 `
 
 const style = document.createElement('style');
