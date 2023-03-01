@@ -5,8 +5,16 @@ import "./slider.js";
 import "./soundboard.js"
 import "./JSONviewer.js"
 
-const height = 50;
-const width = 50;
+const height = 75;
+const width = 75;
+
+// Add components here (id is important for communication)
+// const html = `
+//     <joystick-Ƅ id="movement2d"></joystick-Ƅ>
+//     <tts-Ƅ id="tts"></tts-Ƅ>
+//     <slider-Ƅ id="force" min="0" max="200" start="100"></slider-Ƅ>
+//     <slider-Ƅ id="speed" min="0" max="500" start="100"></slider-Ƅ>
+// `;
 
 // Available components:
 // <joystick-Ƅ id="movement2d"></joystick-Ƅ>
@@ -16,23 +24,21 @@ const width = 50;
 // <soundboard-Ƅ id="sounds"></soundboard-Ƅ>
 
 const html = `
-    <div class="one">
-        <joystick-Ƅ id="movement2d"></joystick-Ƅ>
-    </div>
-    <div class="two">
-        <soundboard-Ƅ id="sounds"></soundboard-Ƅ>
-    </div>
-    <div class="three">
-        <tts-Ƅ id="tts"></tts-Ƅ>
-    </div>
-    <div class="four">
-        <json-Ƅ id="json" data-value=""></json-Ƅ>
-    </div>
+        <div class="one">
+            <joystick-Ƅ id="movement2d"></joystick-Ƅ>
+        </div>
+        <div class="two">
+            <soundboard-Ƅ id="sounds"></soundboard-Ƅ>
+        </div>
+        <div class="three">
+            <tts-Ƅ id="tts"></tts-Ƅ>
+        </div>
 `
 
 const style = document.createElement('style');
 style.textContent = `
     :host {
+        background-color: #ecf0f3;
         box-sizing: border-box;
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -42,7 +48,7 @@ style.textContent = `
         border: 5px solid #000;
         border-radius: 1rem;
         position: fixed;
-        top: 50%;
+        top: 60%;
         left: 50%;
         transform: translate(-50%, -50%);
     }

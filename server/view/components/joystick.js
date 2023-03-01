@@ -24,7 +24,9 @@ window.customElements.define('joystick-Ƅ', class extends HTMLElement {
                 box-sizing: border-box;
                 position: absolute;
                 aspect-ratio: 1/1;
-                border: 5px solid #bbb;
+                background: #ecf0f3;
+                box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+                border-radius: 20px;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
@@ -35,7 +37,7 @@ window.customElements.define('joystick-Ƅ', class extends HTMLElement {
                 width: ${this.#knobSize}%;
                 height: ${this.#knobSize}%;
                 border-radius: 50%;
-                background-color: #bf7474;
+                background-color: #1DA1F2;
                 position: relative;
                 top: 50%;
                 left: 50%;
