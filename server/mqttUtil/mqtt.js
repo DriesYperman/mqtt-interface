@@ -9,9 +9,9 @@ const succes_send_color = '\x1b[35m%s\x1b[0m';
 const didnt_send_color = '\x1b[36m%s\x1b[0m';
 
 const messageEmitter = new EventEmitter();
-let message_data = { "newMessage": false, "topic": "", "message": "" };
+let message_data = { "topic": "", "message": "" };
 
-const setMessageData = (data) => {
+const sendMessageData = (data) => {
     messageEmitter.emit('messageUpdated', `${data}`);
 }
 
@@ -27,9 +27,10 @@ const publish_topic_bindings = {
 
 // All topics for subscribing
 const subscribe_topic_bindings = {
-    "tts": "zbos/dialog/set",
-    "camera": "zbos/camera/stream/answer",
-    "movement2d": "zbos/motion/control/movement"
+    "zbos/dialog/set": "tts",
+    "zbos/camera/stream/answer": "camera",
+    "zbos/motion/control/movement": "movement2d",
+    "zbos/sensors/event": "sensor"
 };
 
 const mqttInit = () => {
@@ -49,8 +50,8 @@ const mqttInit = () => {
     })
 
     connection.on('message', function (topic, message) {
-        message_data = { "topic": topic, "message": message };
-        setMessageData(message);
+        message_data = `{ "source": "${subscribe_topic_bindings[topic]}", "message": ${message} }`;
+        sendMessageData(message_data);
     });
 }
 
@@ -60,7 +61,7 @@ const subscribeToTopics = (bindings) => {
     }
 }
 
-const mqttSubscribe = (source, topic) => {
+const mqttSubscribe = (topic, source) => {
     connection.subscribe(topic, function (err) {
         if (!err) {
             console.log('\x1b[32m%s\x1b[0m', `${source} subscribed to ${topic}`);

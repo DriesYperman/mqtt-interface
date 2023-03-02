@@ -115,9 +115,11 @@ window.customElements.define('controller-Ƅ', class extends HTMLElement {
                 console.dir(error);
                 incoming = { "payload": "illegal payload" };
             }
-            switch (incoming) {
-                default:
-                    this.sendJsonData(incoming);
+            this.sendJsonData(incoming);
+            if (incoming.hasOwnProperty("source")) {
+                if (incoming.source == "sensor") {
+                    console.log("here");
+                }
             }
         });
 
@@ -167,12 +169,12 @@ window.customElements.define('controller-Ƅ', class extends HTMLElement {
     sendJsonData(data) {
         const jsonView = this._shadowroot.getElementById("json");
         jsonView.dispatchEvent(new CustomEvent("jsonData", {
-			bubbles: true,
-			composed: true,
-			detail: {
-				"message": data
-			}
-		}));
+            bubbles: true,
+            composed: true,
+            detail: {
+                "message": data
+            }
+        }));
     }
 
 });
