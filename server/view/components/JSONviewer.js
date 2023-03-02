@@ -19,11 +19,23 @@ window.customElements.define('json-Ƅ', class extends HTMLElement {
                 box-sizing: border-box;
                 position: absolute;
                 aspect-ratio: 1/1;
-                border: 5px solid #bbb;
+                background: #ecf0f3;
+                box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+                border-radius: 20px;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 height: ${this.#boxSize}%;
+            }
+            pre{
+                margin-left:10%;
+                margin-right:10%;
+                font-weight:bold;
+            }
+            #test{
+                padding-right:20%;
+                padding-left:10%;
+                padding-top:3%;
             }
 		`;
 
@@ -33,7 +45,16 @@ window.customElements.define('json-Ƅ', class extends HTMLElement {
 
         this.addEventListener("jsonData", (e) => {
             const data = e.detail.message;
-            this._shadowroot.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+            const response = JSON.stringify(data)
+            const answer = response.replace(/[,]/g, "<br>");
+            const answer2  = answer.replace(/[{}]/g, "");
+            const answer3  = answer2.replace(/["]/g, "")
+
+            const final = String(answer)
+           // const finalfinal= final.replace(/)
+            console.log(final);
+            this._shadowroot.getElementById("json").innerHTML = answer3;
+
         })
 
     }
