@@ -19,7 +19,17 @@ window.customElements.define('map-Ƅ', class extends HTMLElement {
     constructor() {
         super();
 
-        this.imageElement = new Image();
+        this.div = document.createElement('div');
+        this.div.id = "container";
+        this.div.innerHTML = `
+            <button type="button" id="refresh">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
+                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
+                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
+                </svg>
+            </button>
+            <img id="mapview">
+        `;
 
         this.style = document.createElement('style');
         this.style.textContent = `
@@ -33,17 +43,32 @@ window.customElements.define('map-Ƅ', class extends HTMLElement {
                 transform: translate(-50%, -50%);
                 height: ${this.#boxSize}%;
             }
+            img {
+                width: 100%;
+            }
 		`;
 
         this._shadowroot = this.attachShadow({ mode: 'open' });
-        this._shadowroot.appendChild(this.imageElement);
+        this._shadowroot.appendChild(this.div);
         this._shadowroot.appendChild(this.style);
 
-        this.addEventListener("jsonData", (e) => {
-            const data = e.detail.message;
-            this._shadowroot.getElementById("json").innerHTML = JSON.stringify(data, undefined, 2);
+        const refreshBtn = this._shadowroot.getElementById("refresh");
+        refreshBtn.addEventListener('click', () => {
+            this.requestMap();
         })
 
+        this.addEventListener("jsonData", (e) => {
+            const data = e.detail.data;
+            this._shadowroot.getElementById("mapview").src = `data:image/png;base64, ${data}`;
+        })
+
+    }
+
+    requestMap() {
+        this.dispatchEvent(new CustomEvent('mapRequest', {
+            bubbles: true,
+            composed: true,
+        }));
     }
 
 });

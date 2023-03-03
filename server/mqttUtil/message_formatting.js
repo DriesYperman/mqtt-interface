@@ -52,6 +52,10 @@ const radToDegrees = (rads) => {
     return rads * 180 / Math.PI;
 }
 
+const mapRequest = (data) => {
+    return data;
+}
+
 // module.exports = {
 //     movement2d,
 //     force,
@@ -59,4 +63,4 @@ const radToDegrees = (rads) => {
 //     speed
 // };
 
-export { movement2d, force, tts, speed, sounds };
+export { movement2d, force, tts, speed, sounds, mapRequest };

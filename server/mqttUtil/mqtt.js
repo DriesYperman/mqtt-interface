@@ -22,15 +22,18 @@ let connected_for_publishing = false;
 const publish_topic_bindings = {
     "movement2d": "zbos/motion/control/movement",
     "tts": "zbos/dialog/set",
-    "sounds": "zbos/audio/player/start"
+    "sounds": "zbos/audio/player/start",
+    "mapRequest": "zbos/slam/mapview/current/get"
 };
 
 // All topics for subscribing
+// set key = "json" to log all data in json web component
 const subscribe_topic_bindings = {
-    "zbos/dialog/set": "tts",
-    "zbos/camera/stream/answer": "camera",
-    "zbos/motion/control/movement": "movement2d",
-    "zbos/sensors/event": "sensor"
+    "zbos/dialog/set": "json",
+    "zbos/motion/control/movement": "json",
+    "zbos/sensors/event": "json",
+    "zbos/slam/mapview/current": "map",
+    "zbos/slam/mapview/current/response/map": "mapResponse"
 };
 
 const mqttInit = () => {
@@ -50,8 +53,10 @@ const mqttInit = () => {
     })
 
     connection.on('message', function (topic, message) {
-        message_data = `{ "source": "${subscribe_topic_bindings[topic]}", "message": ${message} }`;
-        sendMessageData(message_data);
+        //TODO // const jsonData = format[subscribe_topic_bindings[topic]](message);   // format[source](data) calls a method with name of <source> inside message_formatting.js with argument <data>
+        const stringData = message.toString();
+        const jsonData = JSON.stringify({ "source": subscribe_topic_bindings[topic], "data": stringData });
+        sendMessageData(jsonData);
     });
 }
 

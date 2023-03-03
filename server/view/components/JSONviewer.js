@@ -7,11 +7,8 @@ window.customElements.define('json-Ƅ', class extends HTMLElement {
     constructor() {
         super();
 
-        this.div = document.createElement('div');
-        this.div.id = "test";
-        this.div.innerHTML = `
-            <pre id="json"></pre>
-        `;
+        this.pre = document.createElement('pre');
+        this.pre.id = "jsonData";
 
         this.style = document.createElement('style');
         this.style.textContent = `
@@ -32,29 +29,14 @@ window.customElements.define('json-Ƅ', class extends HTMLElement {
                 margin-right:10%;
                 font-weight:bold;
             }
-            #test{
-                padding-right:20%;
-                padding-left:10%;
-                padding-top:3%;
-            }
 		`;
 
         this._shadowroot = this.attachShadow({ mode: 'open' });
-        this._shadowroot.appendChild(this.div);
+        this._shadowroot.appendChild(this.pre);
         this._shadowroot.appendChild(this.style);
 
         this.addEventListener("jsonData", (e) => {
-            const data = e.detail.message;
-            const response = JSON.stringify(data)
-            const answer = response.replace(/[,]/g, "<br>");
-            const answer2  = answer.replace(/[{}]/g, "");
-            const answer3  = answer2.replace(/["]/g, "")
-
-            const final = String(answer)
-           // const finalfinal= final.replace(/)
-            console.log(final);
-            this._shadowroot.getElementById("json").innerHTML = answer3;
-
+            this.pre.innerHTML = e.detail.data;
         })
 
     }

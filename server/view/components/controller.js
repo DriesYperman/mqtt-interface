@@ -2,8 +2,9 @@ import { HOST, PORT } from "../env.js"
 import "./joystick.js";
 import "./tts.js";
 import "./slider.js";
-import "./soundboard.js"
-import "./JSONviewer.js"
+import "./soundboard.js";
+import "./JSONviewer.js";
+import "./mapview.js";
 
 const height = 75;
 const width = 75;
@@ -22,19 +23,21 @@ const width = 75;
 // <slider-Ƅ id="force" min="0" max="200" start="100"></slider-Ƅ>
 // <slider-Ƅ id="speed" min="0" max="500" start="100"></slider-Ƅ>
 // <soundboard-Ƅ id="sounds"></soundboard-Ƅ>
+// <json-Ƅ id="json"></json-Ƅ>
+// <map-Ƅ id="map"></map-Ƅ>
 
 const html = `
         <div class="one">
             <joystick-Ƅ id="movement2d"></joystick-Ƅ>
         </div>
         <div class="two">
-            <soundboard-Ƅ id="sounds"></soundboard-Ƅ>
+            <map-Ƅ id="map"></map-Ƅ>
         </div>
         <div class="three">
             <tts-Ƅ id="tts"></tts-Ƅ>
         </div>
         <div class="four">
-            <json-Ƅ id="json"><json-Ƅ>
+            <json-Ƅ id="json"></json-Ƅ>
         </div>
 `
 
@@ -93,6 +96,7 @@ let tts = { "message": "" };
 let force = { "value": 0 };
 let speed = { "value": 0 };
 let sounds = { "link": "" };
+let mapRequest = { "key": "map" };
 // ----------------------------------------------
 
 window.customElements.define('controller-Ƅ', class extends HTMLElement {
@@ -115,12 +119,8 @@ window.customElements.define('controller-Ƅ', class extends HTMLElement {
                 console.dir(error);
                 incoming = { "payload": "illegal payload" };
             }
+            // Send json data to component with id = source
             this.sendJsonData(incoming);
-            if (incoming.hasOwnProperty("source")) {
-                if (incoming.source == "sensor") {
-                    console.log("here");
-                }
-            }
         });
 
         this.socket.addEventListener('open', event => {
@@ -160,19 +160,31 @@ window.customElements.define('controller-Ƅ', class extends HTMLElement {
                 let message = { "payload": "mqtt", "source": "sounds", "data": sounds };
                 this.socket.send(JSON.stringify(message));
             });
+            this.addEventListener("mapRequest", () => {
+                let message = { "payload": "mqtt", "source": "mapRequest", "data": mapRequest };
+                this.socket.send(JSON.stringify(message));
+            });
             // ---------------------------------------------
         });
 
 
     }
 
-    sendJsonData(data) {
-        const jsonView = this._shadowroot.getElementById("json");
-        jsonView.dispatchEvent(new CustomEvent("jsonData", {
+    sendJsonData(json) {
+        let source = json.source;
+        let data = json.data;
+        // Response when requesting a map has another format so we'll filter it here
+        if (source === "mapResponse") { 
+            data = JSON.parse(data).data;
+            console.log(data);
+            source = "map";
+        }
+        const element = this._shadowroot.getElementById(source);
+        element.dispatchEvent(new CustomEvent("jsonData", {
             bubbles: true,
             composed: true,
             detail: {
-                "message": data
+                "data": data
             }
         }));
     }

@@ -40,7 +40,7 @@ wss.on('connection', function connection(ws) {
     });
 
     mqqtUtil.messageEmitter.on('messageUpdated', (data) => {
-        const message = JSON.parse(data);
+        // Sends a JSON string
         ws.send(data);
     });
 });
