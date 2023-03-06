@@ -10,13 +10,13 @@ window.customElements.define('soundboard-Ƅ', class extends HTMLElement {
         this.div = document.createElement('div');
         this.div.id = "board";
         this.div.innerHTML = `
-            <div class="square color1" id="emotional-damage-meme"><a href="#" class="btn blue">Emotional damage</a></div>
-            <div class="square color2" id="chupapi-short"> <a href="#" class="btn red">Chupapi</a></div>
+            <div class="square color1" id="rocky-theme-tune-mp3cut"><a href="#" class="btn blue">rocky</a></div>
+            <div class="square color2" id="windows-xp-shutdown"> <a href="#" class="btn red">shutdown</a></div>
             <div class="square color2" id="mwoah"><a href="#" class="btn green">Mwoah</a></div>
             <div class="square color1" id="samson-jaah-1"> <a href="#" class="btn purple">samson</a></div>
-            <div class="square color1" id="voorzichtig-op-de-baad"> <a href="#" class="btn yellow">voorzichtig</a></div>
-            <div class="square color2" id="untitled-2_10"><a href="#" class="btn orange">untitled</a></div>
-            <div class="square color2" id="het-lijden-van-de-vlaamse-bosdwerg"><a href="#" class="btn navy">vlaamse bosdwerg</a></div>
+            <div class="square color1" id="okay-guy"> <a href="#" class="btn yellow">okay</a></div>
+            <div class="square color2" id="i-have-several-questions"><a href="#" class="btn orange">questions</a></div>
+            <div class="square color2" id="ringtone_20"><a href="#" class="btn navy">my name is jef</a></div>
             <div class="square color1" id="tf_nemesis"> <a href="#" class="btn pink">nemesis</a></div>
     	`;
 
@@ -67,7 +67,12 @@ window.customElements.define('soundboard-Ƅ', class extends HTMLElement {
                 margin-left:10%;
                 color: #fff;
                 position: relative;
-                display: inline-block;
+                display: flex;
+                width:60%;
+                height:60%;
+                
+                justify-content: center;
+                align-items: center;
               }
               
               .btn:active {

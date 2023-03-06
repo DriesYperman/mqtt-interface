@@ -8,6 +8,7 @@ import "./mapview.js";
 
 const height = 75;
 const width = 75;
+const boxSize = 80;
 
 // Add components here (id is important for communication)
 // const html = `
@@ -40,8 +41,10 @@ const html = `
             <json-Ƅ id="json"></json-Ƅ>
         </div>
         <div class="five">
-            <slider-Ƅ id="force" min="0" max="200" start="100"></slider-Ƅ>
-            <slider-Ƅ id="speed" min="0" max="200" start="100"></slider-Ƅ>
+            <div class="sliderPanel">
+                <slider-Ƅ id="force" min="0" max="200" start="100"></slider-Ƅ>
+                <slider-Ƅ id="speed" min="0" max="200" start="100"></slider-Ƅ>
+            </div>
         </div>
         <div class="six">
             <soundboard-Ƅ id="sounds"></soundboard-Ƅ>
@@ -58,10 +61,11 @@ style.textContent = `
         grid-auto-rows: 1fr;
         height: ${height}%;
         width: ${width}%;
-        border: 5px solid #000;
-        border-radius: 1rem;
+        background: #ecf0f3;
+        box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+        border-radius: 20px;
         position: fixed;
-        top: 60%;
+        top: 50%;
         left: 50%;
         transform: translate(-50%, -50%);
     }
@@ -108,6 +112,21 @@ style.textContent = `
         width: 100%;
         height: 100%;
     }
+    .sliderPanel{
+        box-sizing: border-box;
+                position: absolute;
+                aspect-ratio: 1/1;
+                background: #ecf0f3;
+                box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+                border-radius: 20px;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+                height: ${boxSize}%;
+                padding-left: 10%;
+                padding-top:2%
+                
+            }
 
 `;
 

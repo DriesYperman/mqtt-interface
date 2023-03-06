@@ -5,6 +5,7 @@ window.customElements.define('slider-Ƅ', class extends HTMLElement {
   #min = 0;
   #max = 100;
   #start = 50;
+  #boxSize = 90;
 
   constructor() {
     super();
@@ -16,15 +17,97 @@ window.customElements.define('slider-Ƅ', class extends HTMLElement {
     this.slide = document.createElement('div');
     this.slide.id = 'slide';
     this.slide.innerHTML = `
-    <p>${this.id} (${this.#min} --> ${this.#max}):</p>
+      <p class="header">${this.id} (${this.#min} --> ${this.#max}):</p>
       <input type="range" min="${this.#min}" max="${this.#max}" value="${this.#start}" id="slideSlider">
-      <p>Value: <span id="sliderValue"></span></p>
+      <p class="value">Value: <span id="sliderValue"></span></p>
     `;
 
     this.style = document.createElement('style');
     this.style.textContent = `
     :host {
-    padding: 5px;
+     
+  }
+    .header {
+      margin-top: 10px;
+      font-weight: 900;
+      font-size: 1rem;
+      color: #555b5e;
+      
+    }
+    .value{
+      margin-top: 10px;
+      font-weight: 600;
+      font-size: 1rem;
+      color: #555b5e;
+
+    }
+
+    input[type="range"] {
+      width: 80%;
+      margin: auto;
+      pointer-events:auto;
+    }
+    
+    input[type="range"]:focus {
+      outline: none;
+    }
+    
+    input[type="range"],
+    input[type="range"]::-webkit-slider-runnable-track,
+    input[type="range"]::-webkit-slider-thumb {
+      -webkit-appearance: none;
+    }
+    
+    input[type="range"]::-webkit-slider-thumb {
+      background-color: white;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #1da1f2;
+      border-radius: 50%;
+      margin-top: -9px;
+    }
+    
+    input[type="range"]::-moz-range-thumb {
+      background-color: #1da1f2;
+      width: 15px;
+      height: 15px;
+      border: 3px solid #333;
+      border-radius: 50%;
+    }
+    
+    input[type="range"]::-ms-thumb {
+      background-color: #1da1f2;
+      width: 20px;
+      height: 20px;
+      border: 3px solid #333;
+      border-radius: 50%;
+    }
+    
+    input[type="range"]::-webkit-slider-runnable-track {
+      background-color: #1da1f2;
+      height: 3px;
+    }
+    
+    input[type="range"]:focus::-webkit-slider-runnable-track {
+      outline: none;
+    }
+    
+    input[type="range"]::-moz-range-track {
+      background-color: #1da1f2;
+      height: 3px;
+    }
+    
+    input[type="range"]::-ms-track {
+      background-color: #1da1f2;
+      height: 3px;
+    }
+    
+    input[type="range"]::-ms-fill-lower {
+      background-color: #1da1f2;
+    }
+    
+    input[type="range"]::-ms-fill-upper {
+      background-color: #1da1f2;
     }
     
     .slider {
