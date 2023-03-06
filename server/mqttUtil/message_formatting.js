@@ -1,3 +1,4 @@
+// -----Functions for formatting outgoing mqtt messages-----
 // Function name has to be the component's id
 
 let degrees_;
@@ -56,11 +57,37 @@ const mapRequest = (data) => {
     return data;
 }
 
-// module.exports = {
-//     movement2d,
-//     force,
-//     tts,
-//     speed
-// };
+const enableScanning = (data) => {
+    return data;
+}
 
-export { movement2d, force, tts, speed, sounds, mapRequest };
+// --------------------------------------------------
+
+// -----Functions for formatting incoming mqtt messages-----
+// returns JSON string
+
+const json = (message) => {
+    const stringData = message.toString();
+    const jsonData = JSON.stringify({ "destination": "json", "data": stringData });
+    return jsonData;
+}
+
+const map = (message) => {
+    const stringData = message.toString();
+    const jsonData = JSON.stringify({ "destination": "map", "data": stringData });
+    return jsonData;
+}
+
+const mapResponse = (message) => {
+    const stringData = message.toString();
+    const mapStringData = JSON.parse(stringData).data.toString();
+    const jsonData = JSON.stringify({ "destination": "map", "data": mapStringData });
+    return jsonData;
+}
+
+// --------------------------------------------------
+
+export { 
+        movement2d, force, tts, speed, sounds, mapRequest, enableScanning,
+        json, map, mapResponse
+        };

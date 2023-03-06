@@ -7,8 +7,8 @@ window.customElements.define('json-Ƅ', class extends HTMLElement {
     constructor() {
         super();
 
-        this.pre = document.createElement('pre');
-        this.pre.id = "jsonData";
+        this.div = document.createElement('div');
+        this.div.id = "json-display";
 
         this.style = document.createElement('style');
         this.style.textContent = `
@@ -23,22 +23,48 @@ window.customElements.define('json-Ƅ', class extends HTMLElement {
                 left: 50%;
                 transform: translate(-50%, -50%);
                 height: ${this.#boxSize}%;
+                overflow: scroll;
             }
-            pre{
-                margin-left:10%;
-                margin-right:10%;
+            #json-display {
                 font-weight:bold;
             }
 		`;
 
         this._shadowroot = this.attachShadow({ mode: 'open' });
-        this._shadowroot.appendChild(this.pre);
+        this._shadowroot.appendChild(this.div);
         this._shadowroot.appendChild(this.style);
 
         this.addEventListener("jsonData", (e) => {
-            this.pre.innerHTML = e.detail.data;
-        })
+            const data = JSON.parse(e.detail.data);
+            clearOutput(this.div);
+            displayJsonData(data, this.div);
+        });
 
     }
 
 });
+
+const displayJsonData = (data, container) => {
+    const ul = document.createElement("ul");
+    container.appendChild(ul);
+
+    for (const key in data) {
+        const li = document.createElement("li");
+        const span = document.createElement("span");
+        span.textContent = key + ": ";
+        li.appendChild(span);
+        ul.appendChild(li);
+
+        if (typeof data[key] === "object") {
+            displayJsonData(data[key], li);
+        } else {
+            const value = document.createElement("span");
+            value.textContent = data[key];
+            li.appendChild(value);
+        }
+    }
+}
+
+const clearOutput = (element) => {
+    element.innerHTML = "";
+}

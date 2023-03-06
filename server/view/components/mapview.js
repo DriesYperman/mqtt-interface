@@ -22,13 +22,9 @@ window.customElements.define('map-Ƅ', class extends HTMLElement {
         this.div = document.createElement('div');
         this.div.id = "container";
         this.div.innerHTML = `
-            <button type="button" id="refresh">
-                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-arrow-clockwise" viewBox="0 0 16 16">
-                <path fill-rule="evenodd" d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2v1z"/>
-                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466z"/>
-                </svg>
-            </button>
-            <img id="mapview">
+        <button type="button" id="refresh">refresh</button>
+        <button type="button" id="enable">enable scanning</button>
+        <img id="mapview">
         `;
 
         this.style = document.createElement('style');
@@ -37,13 +33,25 @@ window.customElements.define('map-Ƅ', class extends HTMLElement {
                 box-sizing: border-box;
                 position: absolute;
                 aspect-ratio: 1/1;
-                border: 5px solid #bbb;
+                border-radius: 20px;
                 top: 50%;
                 left: 50%;
                 transform: translate(-50%, -50%);
                 height: ${this.#boxSize}%;
+                background: #ecf0f3;
+                box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
+                text-align: center;
+            }
+            button {
+                padding: .5rem;
+                margin: .5rem;
+                cursor: pointer;
             }
             img {
+                position: absolute;
+                top: 50%;
+                left: 50%;
+                transform: translate(-50%, -50%);
                 width: 100%;
             }
 		`;
@@ -57,6 +65,11 @@ window.customElements.define('map-Ƅ', class extends HTMLElement {
             this.requestMap();
         })
 
+        const enableBtn = this._shadowroot.getElementById("enable");
+        enableBtn.addEventListener('click', () => {
+            this.enableScanning();
+        })
+
         this.addEventListener("jsonData", (e) => {
             const data = e.detail.data;
             this._shadowroot.getElementById("mapview").src = `data:image/png;base64, ${data}`;
@@ -66,6 +79,13 @@ window.customElements.define('map-Ƅ', class extends HTMLElement {
 
     requestMap() {
         this.dispatchEvent(new CustomEvent('mapRequest', {
+            bubbles: true,
+            composed: true,
+        }));
+    }
+    
+    enableScanning() {
+        this.dispatchEvent(new CustomEvent('enableScanning', {
             bubbles: true,
             composed: true,
         }));

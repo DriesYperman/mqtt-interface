@@ -23,7 +23,8 @@ const publish_topic_bindings = {
     "movement2d": "zbos/motion/control/movement",
     "tts": "zbos/dialog/set",
     "sounds": "zbos/audio/player/start",
-    "mapRequest": "zbos/slam/mapview/current/get"
+    "mapRequest": "zbos/slam/mapview/current/get",
+    "enableScanning": "zbos/slam/status/event"
 };
 
 // All topics for subscribing
@@ -32,8 +33,8 @@ const subscribe_topic_bindings = {
     "zbos/dialog/set": "json",
     "zbos/motion/control/movement": "json",
     "zbos/sensors/event": "json",
-    "zbos/slam/mapview/current": "map",
-    "zbos/slam/mapview/current/response/map": "mapResponse"
+    "zbos/slam/mapview/current": "map", // -> map is returned as a string
+    "zbos/slam/mapview/current/response/map": "mapResponse" // -> response has json with map string as value of data key
 };
 
 const mqttInit = () => {
@@ -53,9 +54,7 @@ const mqttInit = () => {
     })
 
     connection.on('message', function (topic, message) {
-        //TODO // const jsonData = format[subscribe_topic_bindings[topic]](message);   // format[source](data) calls a method with name of <source> inside message_formatting.js with argument <data>
-        const stringData = message.toString();
-        const jsonData = JSON.stringify({ "source": subscribe_topic_bindings[topic], "data": stringData });
+        const jsonData = format[subscribe_topic_bindings[topic]](message);   // format[source](data) calls a method with name of <source> inside message_formatting.js with argument <data>
         sendMessageData(jsonData);
     });
 }

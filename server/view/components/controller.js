@@ -39,6 +39,13 @@ const html = `
         <div class="four">
             <json-Ƅ id="json"></json-Ƅ>
         </div>
+        <div class="five">
+            <slider-Ƅ id="force" min="0" max="200" start="100"></slider-Ƅ>
+            <slider-Ƅ id="speed" min="0" max="200" start="100"></slider-Ƅ>
+        </div>
+        <div class="six">
+            <soundboard-Ƅ id="sounds"></soundboard-Ƅ>
+        </div>
 `
 
 const style = document.createElement('style');
@@ -47,8 +54,8 @@ style.textContent = `
         background-color: #ecf0f3;
         box-sizing: border-box;
         display: grid;
-        grid-template-columns: repeat(2, 1fr);
-        grid-auto-rows: minmax(100px, auto);
+        grid-template-columns: repeat(3, 1fr);
+        grid-auto-rows: 1fr;
         height: ${height}%;
         width: ${width}%;
         border: 5px solid #000;
@@ -75,14 +82,28 @@ style.textContent = `
     }
     .three {
         position: relative;
-        grid-column: 1;
-        grid-row: 2;
+        grid-column: 3;
+        grid-row: 1;
         width: 100%;
         height: 100%;
     }
     .four {
         position: relative;
+        grid-column: 1;
+        grid-row: 2;
+        width: 100%;
+        height: 100%;
+    }
+    .five {
+        position: relative;
         grid-column: 2;
+        grid-row: 2;
+        width: 100%;
+        height: 100%;
+    }
+    .six {
+        position: relative;
+        grid-column: 3;
         grid-row: 2;
         width: 100%;
         height: 100%;
@@ -97,6 +118,7 @@ let force = { "value": 0 };
 let speed = { "value": 0 };
 let sounds = { "link": "" };
 let mapRequest = { "key": "map" };
+let enableScanning = { "mappingConfigurable": true, "mappingEnabled": true };
 // ----------------------------------------------
 
 window.customElements.define('controller-Ƅ', class extends HTMLElement {
@@ -164,6 +186,10 @@ window.customElements.define('controller-Ƅ', class extends HTMLElement {
                 let message = { "payload": "mqtt", "source": "mapRequest", "data": mapRequest };
                 this.socket.send(JSON.stringify(message));
             });
+            this.addEventListener("enableScanning", () => {
+                let message = { "payload": "mqtt", "source": "enableScanning", "data": enableScanning };
+                this.socket.send(JSON.stringify(message));
+            });
             // ---------------------------------------------
         });
 
@@ -171,16 +197,10 @@ window.customElements.define('controller-Ƅ', class extends HTMLElement {
     }
 
     sendJsonData(json) {
-        let source = json.source;
+        let dest = json.destination;
         let data = json.data;
-        // Response when requesting a map has another format so we'll filter it here
-        if (source === "mapResponse") { 
-            data = JSON.parse(data).data;
-            console.log(data);
-            source = "map";
-        }
-        const element = this._shadowroot.getElementById(source);
-        element.dispatchEvent(new CustomEvent("jsonData", {
+        const destElement = this._shadowroot.getElementById(dest);
+        destElement.dispatchEvent(new CustomEvent("jsonData", {
             bubbles: true,
             composed: true,
             detail: {
