@@ -47,6 +47,7 @@ window.customElements.define('joystick-Ƅ', class extends HTMLElement {
                 user-select: none;
                 -moz-user-select: none;
                 -webkit-user-select: none;
+                box-shadow: 14px 14px 20px #cbced1, -14px -14px 20px white;
               }
              }
         `;

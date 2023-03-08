@@ -79,7 +79,7 @@ window.customElements.define('tts-Ƅ', class extends HTMLElement {
 				margin-top: 10px;
 				font-weight: 900;
 				font-size: 1.3rem;
-				color: #1DA1F2;
+				color: #555b5e;
 				letter-spacing: 1px;
 			  }
 			  
