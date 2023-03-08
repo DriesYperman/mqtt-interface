@@ -12,7 +12,7 @@ window.customElements.define('soundboard-Ƅ', class extends HTMLElement {
         this.div.innerHTML = `
             <div class="square color1" id="rocky-theme-tune-mp3cut"><a href="#" class="btn blue">rocky</a></div>
             <div class="square color2" id="windows-xp-shutdown"> <a href="#" class="btn red">shutdown</a></div>
-            <div class="square color2" id="mwoah"><a href="#" class="btn green">Mwoah</a></div>
+            <div class="square color2" id="awkward-cricket-sound-effect"><a href="#" class="btn green">silence</a></div>
             <div class="square color1" id="samson-jaah-1"> <a href="#" class="btn purple">samson</a></div>
             <div class="square color1" id="okay-guy"> <a href="#" class="btn yellow">okay</a></div>
             <div class="square color2" id="i-have-several-questions"><a href="#" class="btn orange">questions</a></div>
