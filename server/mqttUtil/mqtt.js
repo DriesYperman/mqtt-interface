@@ -9,7 +9,6 @@ const succes_send_color = '\x1b[35m%s\x1b[0m';
 const didnt_send_color = '\x1b[36m%s\x1b[0m';
 
 const messageEmitter = new EventEmitter();
-let message_data = { "topic": "", "message": "" };
 
 const sendMessageData = (data) => {
     messageEmitter.emit('messageUpdated', `${data}`);
@@ -90,4 +89,4 @@ const mqttSendJsonMessage = (source, data) => {
     }
 }
 
-export { mqttInit, mqttSendJsonMessage, message_data, messageEmitter };
+export { mqttInit, mqttSendJsonMessage, messageEmitter };

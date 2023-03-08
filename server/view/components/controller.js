@@ -10,12 +10,6 @@ const height = 75;
 const width = 75;
 
 // Add components here (id is important for communication)
-// const html = `
-//     <joystick-Ƅ id="movement2d"></joystick-Ƅ>
-//     <tts-Ƅ id="tts"></tts-Ƅ>
-//     <slider-Ƅ id="force" min="0" max="200" start="100"></slider-Ƅ>
-//     <slider-Ƅ id="speed" min="0" max="500" start="100"></slider-Ƅ>
-// `;
 
 // Available components:
 // <joystick-Ƅ id="movement2d"></joystick-Ƅ>

@@ -1,15 +1,3 @@
-// // get the base64 image data
-// const base64ImageData = "data:image/png; " + [INCOMING_IMAGE];
-
-// // create a new image element
-// const imageElement = new Image();
-
-// // set the source of the image element to the base64 image data
-// imageElement.src = base64ImageData;
-
-// // append the image element to the HTML document
-// document.body.appendChild(imageElement);
-
 window.customElements.define('map-Ƅ', class extends HTMLElement {
 
     style;
